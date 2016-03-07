@@ -12,6 +12,7 @@ import Diagrams.TwoD
 import Diagrams.Prelude
 import Data.List.Split (chunksOf)
 import Diagrams.Backend.SVG
+import Data.List (genericLength)
 
 
 
@@ -41,7 +42,11 @@ gridSquare (fw :: FillWeight) (v :: Log Double) = g `beneath` (z # scale s)
 grid (fw :: FillWeight) n m (ns :: [String]) (ms :: [String]) (vs :: [Log Double])
 --  | null ns   = vcat $ map hcat $ map (map (gridSquare fw)) $ chunksOf n $ vs
 --  | length ns /= n = error "grid: annotation length not equal to grid size"
-  | otherwise = vcat $ map hcat $ map (map (gridSquare fw)) $ chunksOf m $ vs
+  | null ns && null ms = grd
+  | otherwise =  (grd ||| ns') === ms'
+  where ns' = if null ns then mempty else vcat $ map (\t -> (square 1) `beneath` (text t # scale (0.9 / genericLength t))) ns
+        ms' = if null ms then mempty else hcat $ map (\t -> (square 1) `beneath` (text t # scale (0.9 / genericLength t))) ms
+        grd = vcat $ map hcat $ map (map (gridSquare fw)) $ chunksOf m $ vs
 
 gridFile fname fw n m ns ms vs
   | True      =renderPretty fname size $ g
