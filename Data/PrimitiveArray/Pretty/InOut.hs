@@ -12,6 +12,7 @@ import Diagrams.TwoD
 import Diagrams.Prelude
 import Data.List.Split (chunksOf)
 import Diagrams.Backend.SVG
+import Diagrams.Backend.Postscript
 import Data.List (genericLength)
 
 
@@ -48,10 +49,11 @@ grid (fw :: FillWeight) n m (ns :: [String]) (ms :: [String]) (vs :: [Log Double
         ms' = if null ms then mempty else hcat $ map (\t -> (square 1) `beneath` (text t # scale (0.9 / genericLength t))) ms
         grd = vcat $ map hcat $ map (map (gridSquare fw)) $ chunksOf m $ vs
 
-gridFile fname fw n m ns ms vs
-  | True      =renderPretty fname size $ g
-  | otherwise = error "grid: input length not n*n"
+svgGridFile fname fw n m ns ms vs = renderPretty fname size $ g
   where size = ((*100) . fromIntegral) <$> mkSizeSpec2D (Just m) (Just n) -- Nothing Nothing -- n n
---        n :: Int = floor (sqrt . fromIntegral $ length vs :: Double)
+        g = grid fw n m ns ms vs
+
+epsGridFile fname fw n m ns ms vs = renderDia Postscript (PostscriptOptions fname size EPS) g
+  where size = ((*100) . fromIntegral) <$> mkSizeSpec2D (Just m) (Just n)
         g = grid fw n m ns ms vs
 
