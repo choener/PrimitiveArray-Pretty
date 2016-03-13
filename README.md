@@ -4,6 +4,8 @@
 
 [*generalized Algebraic Dynamic Programming Homepage*](http://www.bioinf.uni-leipzig.de/Software/gADP/)
 
+Prettyprinting for tables that holds probability information. Currently mostly
+useful for pretty-printing the result of Inside-Outside calculations.
 
 
 
