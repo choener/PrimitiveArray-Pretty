@@ -1,5 +1,5 @@
 Name:           PrimitiveArray-Pretty
-Version:        0.0.0.1
+Version:        0.0.0.2
 License:        BSD3
 License-file:   LICENSE
 Maintainer:     choener@bioinf.uni-leipzig.de
@@ -34,11 +34,11 @@ extra-source-files:
 Library
   Exposed-modules:
     Diagrams.TwoD.ProbabilityGrid
-  build-depends: base                     >= 4.7    &&  < 4.9
+  build-depends: base                     >= 4.7    &&  < 5.0
                , diagrams                 >= 1.3    &&  < 1.4
                , diagrams-contrib         >= 1.3    &&  < 1.4
                , diagrams-lib             >= 1.3    &&  < 1.4
-               , diagrams-svg             >= 1.3    &&  < 1.4
+               , diagrams-svg             >= 1.3    &&  < 1.5
                , diagrams-postscript      >= 1.3    &&  < 1.4
                , log-domain               >= 0.10   &&  < 0.11
                , split                    >= 0.2    &&  < 0.3
@@ -68,11 +68,12 @@ test-suite properties
   default-extensions: CPP
                     , TemplateHaskell
   build-depends: base
-               , PrimitiveArray-Pretty
                , QuickCheck
                , test-framework               >= 0.8  && < 0.9
                , test-framework-quickcheck2   >= 0.3  && < 0.4
                , test-framework-th            >= 0.2  && < 0.3
+               --
+               , PrimitiveArray-Pretty
 
 
 
