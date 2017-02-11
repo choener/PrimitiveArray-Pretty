@@ -25,7 +25,9 @@ data FillWeight = FWlog | FWlinear
 gridSquare
   :: (Monoid m, Semigroup m, TrailLike (QDiagram b V2 Double m))
   => FillWeight -> Log Double -> QDiagram b V2 Double m
-gridSquare (fw :: FillWeight) (v :: Log Double) = g `beneath` (z # scale s)
+gridSquare (fw :: FillWeight) (v :: Log Double)
+  | s >= 0.001 = g `beneath` (z # scale s)
+  | otherwise  = g
   where s = case fw of
               FWlog     -> 1 / (1 - ln v)
               FWlinear  -> exp $ ln v
