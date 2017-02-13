@@ -3,8 +3,10 @@
 
 module Diagrams.TwoD.ProbabilityGrid where
 
+import Data.Data
 import Data.List (genericLength)
 import Data.List.Split (chunksOf)
+import Data.Typeable
 import Diagrams.Backend.Postscript
 import Diagrams.Backend.SVG
 import Diagrams.Prelude
@@ -18,10 +20,10 @@ import Numeric.Log
 -- the line length is @1 / (1 + log value)@ otherwise it is @value@.
 
 data FillWeight = FWlog | FWlinear | FWfill
-  deriving (Eq,Show)
+  deriving (Eq,Show,Data,Typeable)
 
-data FillStyle = FSopaLog | FSopaLin | FSfull
-  deriving (Eq,Show)
+data FillStyle = FSopacityLog | FSopacityLinear | FSfull
+  deriving (Eq,Show,Data,Typeable)
 
 -- | A single square in our grid.
 
@@ -37,9 +39,9 @@ gridSquare fw fs v
               FWlinear  -> exp $ ln v
               FWfill    -> 1
         o = case fs of
-              FSopaLog -> ln v
-              FSopaLin -> exp $ ln v
-              FSfull    -> 1.0 :: Double
+              FSopacityLog    -> ln v
+              FSopacityLinear -> exp $ ln v
+              FSfull          -> 1.0 :: Double
         z = square 1 # lw 0 # ((if fs==FSfull then fc else fcA . flip withOpacity o) blue) # centerXY
         g = square 1 # lc black
 
