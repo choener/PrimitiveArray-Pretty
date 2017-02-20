@@ -40,6 +40,7 @@ Library
                , diagrams-lib             >= 1.3
                , diagrams-svg             >= 1.3
                , diagrams-postscript      >= 1.3
+               , filepath
                , log-domain               >= 0.10
                , split                    >= 0.2
   default-extensions: BangPatterns

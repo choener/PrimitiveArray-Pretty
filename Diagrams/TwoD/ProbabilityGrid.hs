@@ -3,16 +3,19 @@
 
 module Diagrams.TwoD.ProbabilityGrid where
 
-import Data.Data
-import Data.List (genericLength)
-import Data.List.Split (chunksOf)
-import Data.Typeable
-import Diagrams.Backend.Postscript
-import Diagrams.Backend.SVG
-import Diagrams.Prelude
-import Diagrams.TwoD
-import Diagrams.TwoD.Text
-import Numeric.Log
+import           Data.Data
+import           Data.List (genericLength)
+import           Data.List.Split (chunksOf)
+import           Data.Typeable
+import           Diagrams.Backend.Postscript hiding (EPS)
+import           Diagrams.Backend.SVG hiding (SVG)
+import           Diagrams.Prelude
+import           Diagrams.TwoD
+import           Diagrams.TwoD.Text
+import           Numeric.Log
+import qualified Diagrams.Backend.Postscript as DBP
+import qualified Diagrams.Backend.SVG as DBS
+import           System.FilePath (replaceExtension)
 
 
 
@@ -75,7 +78,21 @@ svgGridFile fname fw fs n m ns ms vs = renderPretty fname size $ g
 -- | Render as @eps@.
 
 epsGridFile :: String -> FillWeight -> FillStyle -> Int -> Int -> [String] -> [String] -> [Log Double] -> IO ()
-epsGridFile fname fw fs n m ns ms vs = renderDia Postscript (PostscriptOptions fname size EPS) g
+epsGridFile fname fw fs n m ns ms vs = renderDia Postscript (PostscriptOptions fname size DBP.EPS) g
   where size = ((*100) . fromIntegral) <$> mkSizeSpec2D (Just m) (Just n)
         g = grid fw fs n m ns ms vs
+
+data RenderChoice
+  = SVG
+  | EPS
+  deriving (Eq,Show,Data,Typeable)
+
+-- | Choose a renderer with appropriate file name suffix
+
+gridFile :: [RenderChoice] -> String -> FillWeight -> FillStyle -> Int -> Int -> [String] -> [String] -> [Log Double] -> IO ()
+gridFile cs fname fw fs n m ns ms vs = go cs
+  where go [] = return ()
+        go (c:cs) = case c of
+          SVG -> svgGridFile (replaceExtension fname ".svg") fw fs n m ns ms vs
+          EPS -> epsGridFile (replaceExtension fname ".eps") fw fs n m ns ms vs
 
