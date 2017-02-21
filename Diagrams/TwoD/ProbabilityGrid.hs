@@ -7,6 +7,7 @@ import           Data.Data
 import           Data.List (genericLength)
 import           Data.List.Split (chunksOf)
 import           Data.Typeable
+import           Debug.Trace
 import           Diagrams.Backend.Postscript hiding (EPS)
 import           Diagrams.Backend.SVG hiding (SVG)
 import           Diagrams.Prelude
@@ -42,7 +43,7 @@ gridSquare fw fs v
               FWlinear  -> exp $ ln v
               FWfill    -> 1
         o = case fs of
-              FSopacityLog    -> ln v
+              FSopacityLog    -> 1 / (1 - ln v)
               FSopacityLinear -> exp $ ln v
               FSfull          -> 1.0 :: Double
         z = square 1 # lw 0 # ((if fs==FSfull then fc else fcA . flip withOpacity o) blue) # centerXY
