@@ -94,6 +94,6 @@ gridFile :: [RenderChoice] -> String -> FillWeight -> FillStyle -> Int -> Int ->
 gridFile cs fname fw fs n m ns ms vs = go cs
   where go [] = return ()
         go (c:cs) = case c of
-          SVG -> svgGridFile (replaceExtension fname ".svg") fw fs n m ns ms vs >> go cs
-          EPS -> epsGridFile (replaceExtension fname ".eps") fw fs n m ns ms vs >> go cs
+          SVG -> svgGridFile (fname ++ ".svg") fw fs n m ns ms vs >> go cs
+          EPS -> epsGridFile (fname ++ ".eps") fw fs n m ns ms vs >> go cs
 
