@@ -71,9 +71,11 @@ test-suite properties
                     , TemplateHaskell
   build-depends: base
                , QuickCheck
-               , test-framework               >= 0.8
-               , test-framework-quickcheck2   >= 0.3
-               , test-framework-th            >= 0.2
+               , smallcheck
+               , tasty              >= 0.11
+               , tasty-quickcheck   >= 0.8
+               , tasty-smallcheck   >= 0.8
+               , tasty-th           >= 0.1
                --
                , PrimitiveArray-Pretty
 
