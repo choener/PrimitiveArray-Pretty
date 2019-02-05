@@ -43,7 +43,7 @@ gridSquare
   => FillWeight -> FillStyle -> [(Colour Double, Log Double)] -> QDiagram b V2 Double m
 gridSquare fw fs cv = foldl beneath g ds
   where
-    g = square 1 # lc black # lw 0.01
+    g = strut unitX `beneath` strut unitY -- mempty -- square 1 # lc black # lw 0.01
     xs = sortBy (comparing (Down . snd)) [ (c,v) | (c,v) ← cv, v >= 0.001 ]
     ds = take 1 $ map gen xs
     gen (c,v) =
