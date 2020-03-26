@@ -23,6 +23,8 @@ import qualified Data.Map.Strict as M
 import qualified Diagrams.Backend.Postscript as DBP
 import qualified Diagrams.Backend.SVG as DBS
 import           System.FilePath (replaceExtension)
+import           Data.ByteString.Builder
+import           System.IO (stdout)
 
 
 
@@ -112,7 +114,7 @@ svgGridFile fname fw fs n m ns ms vs = renderPretty fname size $ g
 -- | Render as @eps@.
 
 epsGridFile :: String -> FillWeight -> FillStyle -> Int -> Int -> [String] -> [String] -> [Log Double] -> IO ()
-epsGridFile fname fw fs n m ns ms vs = renderDia Postscript (PostscriptOptions fname size DBP.EPS) g
+epsGridFile fname fw fs n m ns ms vs = renderDias (PostscriptOptions fname size DBP.EPS) [g] >> return ()
   where size = ((*100) . fromIntegral) <$> mkSizeSpec2D (Just m) (Just n)
         g = grid fw fs n m ns ms vs
 
@@ -128,7 +130,7 @@ epsNewGridFile, svgNewGridFile
   → (Int → String)
   → [(Colour Double, Map (Int,Int) (Log Double))]
   → IO ()
-epsNewGridFile fname fw fs r@(minRow,maxRow) c@(minCol,maxCol) renderRow renderCol values = renderDia Postscript (PostscriptOptions fname size DBP.EPS) g
+epsNewGridFile fname fw fs r@(minRow,maxRow) c@(minCol,maxCol) renderRow renderCol values = renderDias (PostscriptOptions fname size DBP.EPS) [g] >> return ()
   where size = ((*100) . fromIntegral) <$> mkSizeSpec2D (Just $ maxCol - minCol) (Just $ maxRow - minRow)
         g = gridNew fw fs r c renderRow renderCol values
 
